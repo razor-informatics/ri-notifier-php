@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class Notifier
 {
-	protected const BASE_DOMAIN = "https://notifier.razorinformatics.co.ke/api/";
+	protected $url = "https://notifier.razorinformatics.co.ke/api/";
 	protected $apiKey;
 	protected $client;
 
@@ -15,9 +15,9 @@ class Notifier
 		$this->apiKey = $apiKey;
 
 		$this->client = new Client([
-			'base_uri' =>  self::BASE_DOMAIN,
+			'base_uri' => $this->url,
 			'headers' => [
-				'Authorization' => 'Bearer '.$this->apiKey,
+				'Authorization' => 'Bearer ' . $this->apiKey,
 				'Content-Type' => 'multipart/form-data',
 				'Accept' => 'application/json'
 			]
