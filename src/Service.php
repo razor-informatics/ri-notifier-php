@@ -31,6 +31,9 @@ abstract class Service
 			case 401:
 				$message = "Unauthenticated - Check your api token";
 				break;
+			case 404:
+				$message = "Data requested was not found";
+				break;
 			case 500:
 				$message = "Server Error - Unhandled error happen on our end";
 				break;
