@@ -1,0 +1,25 @@
+{
+    "name": "razor-informatics/ri-notifier-php",
+    "description": "Official PHP SDK for Razor Informatics Notifier Project",
+    "keywords": ["sms", "text message", "razor informatics", "api", "notifier"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "RazorInformatics\\RiNotifierPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Razor Informatics",
+            "email": "info@razorinformatics.co.ke",
+            "homepage": "https://razorinformatics.co.ke"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.0 || ^7.0",
+        "ext-curl": "*"
+    }
+}
