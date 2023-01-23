@@ -49,7 +49,7 @@ abstract class Service
 				}
 		}
 		return [
-			'status' => 'error',
+			'status' => Constants::STATUS_ERROR,
 			'message' => $message,
 			'data' => $data
 		];
@@ -64,8 +64,8 @@ abstract class Service
 	{
 		$data = json_decode($data->getBody()->getContents(), false);
 		return [
-			'status' => 'success',
-			'data' => (isset($data->data))?$data->data:$data
+			'status' => Constants::STATUS_SUCCESS,
+			'data' => (isset($data->data)) ? $data->data : $data
 		];
 	}
 }
