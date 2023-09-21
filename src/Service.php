@@ -10,10 +10,20 @@ abstract class Service
 
 	protected $apiKey;
 
-	public function __construct(Client $client, string $apiKey)
+    /**
+     * @param Client $client
+     * @param string $apiKey
+     */
+    public function __construct($client, $apiKey = '')
 	{
 		$this->client = $client;
-		$this->apiKey = $apiKey;
+
+        if (is_string($apiKey)) {
+            $this->apiKey = $apiKey;
+        } else {
+            $this->apiKey = '';
+        }
+
 	}
 
 	/**
