@@ -71,3 +71,27 @@ $results = $razor->account()->getDetails();
 
 print_r($results);
 ```
+
+### Get Gateway Balance Example
+
+Get the account balance of gateway selected when available.
+Available gateways are
+
+- Notifier (project balance)
+- Celcom Africa
+- Emreign
+- Africa’s Talking
+- Onfon Media
+- Web SMS
+- _more coming soon._
+
+```php
+use RazorInformatics\RiNotifierPhp;
+
+$apiKey  = 'YOUR_API_KEY';
+$razor = new RiNotifierPhp\Notifier($apiKey);
+
+$results = $razor->gateway(Constants::GATEWAY_NOTIFIER)->details();
+
+print_r($results);
+```

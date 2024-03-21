@@ -40,4 +40,12 @@ class Notifier
 		return new Account($this->client, $this->apiKey);
 	}
 
+    /**
+     * @return Gateway
+     */
+    public function gateway($gateway = Constants::GATEWAY_NOTIFIER)
+    {
+        return new Gateway($this->client, $this->apiKey, $gateway);
+    }
+
 }
