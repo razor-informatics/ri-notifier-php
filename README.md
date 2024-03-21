@@ -4,7 +4,8 @@
 > This SDK provides easier work with Razor Informatics Notifier API for applications written in PHP.
 
 ## POSTMAN Collection
-get postman collection [here](https://api.postman.com/collections/4421476-caefe8a2-77dc-4323-bd26-11f2df86946f?access_key=PMAT-01GQPC6NKK4YNVXZM3CEVXR7VK)
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/4421476-caefe8a2-77dc-4323-bd26-11f2df86946f?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D4421476-caefe8a2-77dc-4323-bd26-11f2df86946f%26entityType%3Dcollection%26workspaceId%3D159f2a8d-aabb-46d7-a6e3-9912793cede7)
 
 ## Documentation
 To get the depth details of the api check [API docs here](https://notifier.razorinformatics.co.ke).
