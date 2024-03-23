@@ -34,7 +34,8 @@ class Gateway extends Service
     {
         try {
             $response = $this->client->get('v2/balance', [
-                'query' => ['gateway' => $this->gateway]
+                'query' => ['gateway' => $this->gateway],
+                'timeout' => 10
             ]);
         } catch (GuzzleException $e) {
             return $this->error($e->getCode(), $e->getMessage());

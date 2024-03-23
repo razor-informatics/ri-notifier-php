@@ -14,7 +14,7 @@ class Account extends Service
 	 */
 	public function details(){
 		try {
-			$response = $this->client->get('balance');
+            $response = $this->client->get('balance', ['timeout' => 10]);
 		} catch (GuzzleException $e) {
 			return $this->error($e->getCode(),$e->getMessage());
 		}
