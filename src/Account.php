@@ -9,10 +9,9 @@ class Account extends Service
 {
 	/**
 	 * Fetch account details.
-	 *
-	 * @return array
 	 */
-	public function details(){
+	public function details(): array
+    {
 		try {
             $response = $this->client->get('balance', ['timeout' => 10]);
 		} catch (GuzzleException $e) {
@@ -23,19 +22,17 @@ class Account extends Service
 
 	/**
 	 * Fetch account details.
-	 *
-	 * @return array
 	 */
-	public function fetchDetails(){
+	public function fetchDetails(): array
+	{
 		return $this->details();
 	}
 
 	/**
 	 * Fetch account details.
-	 *
-	 * @return array
 	 */
-	public function getDetails(){
+	public function getDetails(): array
+	{
 		return $this->details();
 	}
 }

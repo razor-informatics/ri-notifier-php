@@ -16,10 +16,10 @@
             "homepage": "https://razorinformatics.co.ke"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
-        "php": ">=7.1",
-        "guzzlehttp/guzzle": "^6.0 || ^7.0",
+        "php": ">=8.1",
+        "guzzlehttp/guzzle": "^7.0",
         "ext-json": "*"
     }
 }

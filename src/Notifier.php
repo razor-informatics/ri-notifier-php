@@ -24,26 +24,17 @@ class Notifier
 		]);
 	}
 
-	/**
-	 * @return Message
-	 */
-	public function message()
-	{
+	public function message(): Message
+    {
 		return new Message($this->client, $this->apiKey);
 	}
 
-	/**
-	 * @return Account
-	 */
-	public function account()
-	{
+	public function account(): Account
+    {
 		return new Account($this->client, $this->apiKey);
 	}
 
-    /**
-     * @return Gateway
-     */
-    public function gateway($gateway = Constants::GATEWAY_NOTIFIER)
+	public function gateway($gateway = Constants::GATEWAY_NOTIFIER): Gateway
     {
         return new Gateway($this->client, $this->apiKey, $gateway);
     }

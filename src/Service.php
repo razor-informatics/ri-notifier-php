@@ -14,7 +14,7 @@ abstract class Service
      * @param Client $client
      * @param string $apiKey
      */
-    public function __construct($client, $apiKey = '')
+    public function __construct(Client $client, string $apiKey = '')
 	{
 		$this->client = $client;
 
@@ -26,14 +26,8 @@ abstract class Service
 
 	}
 
-	/**
-	 * @param int $code
-	 * @param string $message
-	 * @param array $data
-	 * @return array
-	 */
-	protected function error($code, $message = '', $data = [])
-	{
+	protected function error(int $code, string $message = '', array $data = []): array
+    {
 		switch ($code) {
 			case 0:
 				$message = "Application could not reach our servers.";
@@ -66,16 +60,16 @@ abstract class Service
 	}
 
 
-	/**
-	 * @param $data
-	 * @return array
-	 */
-	protected function success($data)
-	{
-		$data = json_decode($data->getBody()->getContents(), false);
-		return [
+	protected function success($data): array
+    {
+        try {
+            $data = json_decode($data->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            return $this->error(500, 'Invalid JSON response from server: ' . $e->getMessage());
+        }
+        return [
 			'status' => Constants::STATUS_SUCCESS,
-			'data' => (isset($data->data)) ? $data->data : $data
+			'data' => $data->data ?? $data
 		];
 	}
 }

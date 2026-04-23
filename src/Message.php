@@ -7,11 +7,11 @@ use GuzzleHttp\Exception\GuzzleException;
 class Message extends Service
 {
 	/**
-	 * @param $options =['phone_number'=> '0700100100','message'=>'sample message']
+	 * @param array $options =['phone_number'=> '0700100100','message'=>'sample message']
 	 * @return array
 	 */
-	public function send($options = [])
-	{
+	public function send(array $options = []): array
+    {
 		if (!is_array($options) || empty($options['phone_number']) || empty($options['message'])) {
 			return $this->error(7, 'phone number and message must be defined.');
 		}
@@ -30,16 +30,13 @@ class Message extends Service
 		return $this->success($response);
 	}
 
-	/**
-	 * Get message details using message if
-	 *
-	 * @param string $message_id
-	 * @return array
-	 */
-	public function getMessage($message_id)
-	{
+    /**
+     * Get message details using a message
+     */
+	public function getMessage(string $messageId): array
+    {
 		try {
-			$response = $this->client->get('message/' . $message_id);
+			$response = $this->client->get('message/' . $messageId);
 		} catch (GuzzleException $e) {
 			return $this->error($e->getCode(), $e->getMessage());
 		}
@@ -47,24 +44,18 @@ class Message extends Service
 	}
 
 	/**
-	 * Get message details using message if
-	 *
-	 * @param string $message_id
-	 * @return array
+	 * Get message details using a message
 	 */
-	public function messageDetails($message_id)
-	{
-		return $this->getMessage($message_id);
+	public function messageDetails(string $messageId): array
+    {
+		return $this->getMessage($messageId);
 	}
 
 	/**
-	 * Get message details using message if
-	 *
-	 * @param string $message_id
-	 * @return array
+	 * Get message details using a message
 	 */
-	public function fetchMessage($message_id)
-	{
-		return $this->getMessage($message_id);
+	public function fetchMessage(string $messageId): array
+    {
+		return $this->getMessage($messageId);
 	}
 }
