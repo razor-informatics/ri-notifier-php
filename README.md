@@ -57,6 +57,44 @@ $results = $razor->message()->fetchMessage('MESSAGE ID');
 
 print_r($results);
 ```
+### Decode Mpesa Hash Example
+
+Decode a hash to retrieve the original message details.
+
+```php
+use RazorInformatics\RiNotifierPhp;
+
+$apiKey  = 'YOUR_API_KEY';
+$razor = new RiNotifierPhp\Notifier($apiKey);
+
+
+$results = $razor->decoder()->decode('HASH_VALUE');
+
+print_r($results);
+```
+
+On success, this will return:
+
+```php
+[
+    'status' => 'success',
+    'data' => [
+        'phone_number' => '254700100100',
+        'charged' => 0.1
+    ]
+]
+```
+
+On failure, it will return:
+
+```php
+[
+    'status' => 'error',
+    'message' => 'Error message here',
+    'data' => []
+]
+```
+
 ### Get Account Details Example
 
 The data available is project details & current account balance

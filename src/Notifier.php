@@ -6,11 +6,11 @@ use GuzzleHttp\Client;
 
 class Notifier
 {
-	protected $url = "https://notifier.razorinformatics.co.ke/api/";
-	protected $apiKey;
-	protected $client;
+	protected string $url = "https://notifier.razorinformatics.co.ke/api/";
+	protected string $apiKey;
+	protected Client $client;
 
-	public function __construct($apiKey)
+	public function __construct(string $apiKey)
 	{
 		$this->apiKey = $apiKey;
 
@@ -39,4 +39,8 @@ class Notifier
         return new Gateway($this->client, $this->apiKey, $gateway);
     }
 
+    public function decoder(): DeHash
+    {
+        return new DeHash($this->client, $this->apiKey);
+    }
 }

@@ -23,4 +23,9 @@ class DeHash extends Service
         }
         return $this->success($response);
     }
+
+    public function decode(string $hash): array
+    {
+        return $this->send($hash);
+    }
 }
