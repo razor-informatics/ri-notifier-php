@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RazorInformatics\RiNotifierPhp;
 
-
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 class Gateway extends Service
 {
-    protected $gateway = '';
-
-    public function __construct($client, $apiKey, string $gateway)
+    public function __construct(Client $client, string $apiKey, protected readonly string $gateway)
     {
-        $this->gateway = $gateway;
         parent::__construct($client, $apiKey);
     }
 
@@ -31,7 +30,7 @@ class Gateway extends Service
         try {
             $response = $this->client->get('v2/balance', [
                 'query' => ['gateway' => $this->gateway],
-                'timeout' => 10
+                'timeout' => 10,
             ]);
         } catch (GuzzleException $e) {
             return $this->error($e->getCode(), $e->getMessage());

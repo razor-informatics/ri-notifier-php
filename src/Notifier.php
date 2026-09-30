@@ -1,40 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RazorInformatics\RiNotifierPhp;
 
 use GuzzleHttp\Client;
 
 class Notifier
 {
-	protected string $url = "https://notifier.razorinformatics.co.ke/api/";
-	protected string $apiKey;
-	protected Client $client;
+    protected string $url = 'https://notifier.razorinformatics.co.ke/api/';
+    protected readonly Client $client;
 
-	public function __construct(string $apiKey)
-	{
-		$this->apiKey = $apiKey;
-
-		$this->client = new Client([
-			'base_uri' => $this->url,
-			'headers' => [
-				'Authorization' => 'Bearer ' . $this->apiKey,
-				'Content-Type' => 'multipart/form-data',
-				'Accept' => 'application/json'
-			]
-		]);
-	}
-
-	public function message(): Message
+    public function __construct(protected readonly string $apiKey)
     {
-		return new Message($this->client, $this->apiKey);
-	}
+        $this->client = new Client([
+            'base_uri' => $this->url,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'multipart/form-data',
+                'Accept' => 'application/json',
+            ],
+        ]);
+    }
 
-	public function account(): Account
+    public function message(): Message
     {
-		return new Account($this->client, $this->apiKey);
-	}
+        return new Message($this->client, $this->apiKey);
+    }
 
-	public function gateway($gateway = Constants::GATEWAY_NOTIFIER): Gateway
+    public function account(): Account
+    {
+        return new Account($this->client, $this->apiKey);
+    }
+
+    public function gateway(string $gateway = Constants::GATEWAY_NOTIFIER): Gateway
     {
         return new Gateway($this->client, $this->apiKey, $gateway);
     }

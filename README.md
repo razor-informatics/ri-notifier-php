@@ -10,6 +10,14 @@
 ## Documentation
 To get the depth details of the api check [API docs here](https://notifier.razorinformatics.co.ke).
 
+## Requirements
+
+- PHP **8.3** or newer
+- [Guzzle](https://github.com/guzzle/guzzle) 7.10+ or 8.x (installed automatically by Composer)
+
+> **Note:** PHP 8.1 reached end of life on 31 Dec 2025, and PHP 8.2 only gets security fixes until it reaches end of life on 31 Dec 2026.
+> Starting with this release, the SDK requires PHP 8.3+. If you are still on PHP 8.1/8.2, pin `razor-informatics/ri-notifier-php:^0.2` until you upgrade.
+
 ## Install
 
 You can install the PHP SDK via composer or by downloading the source
@@ -36,7 +44,7 @@ $razor = new RiNotifierPhp\Notifier($apiKey);
 
 
 $results = $razor->message()->send([
-        'phone_number' => 0700XXXYYY,
+        'phone_number' => '0700123456',
         'message' => "Howdy welcome to the team"
 ]);
 
@@ -130,7 +138,7 @@ use RazorInformatics\RiNotifierPhp;
 $apiKey  = 'YOUR_API_KEY';
 $razor = new RiNotifierPhp\Notifier($apiKey);
 
-$results = $razor->gateway(Constants::GATEWAY_NOTIFIER)->details();
+$results = $razor->gateway(RiNotifierPhp\Constants::GATEWAY_NOTIFIER)->details();
 
 print_r($results);
 ```
