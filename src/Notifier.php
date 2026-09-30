@@ -11,7 +11,7 @@ class Notifier
     protected string $url = 'https://notifier.razorinformatics.co.ke/api/';
     protected readonly Client $client;
 
-    public function __construct(protected readonly string $apiKey)
+    public function __construct(#[\SensitiveParameter] protected readonly string $apiKey)
     {
         $this->client = new Client([
             'base_uri' => $this->url,

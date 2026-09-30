@@ -11,7 +11,7 @@ abstract class Service
 {
     public function __construct(
         protected readonly Client $client,
-        protected readonly string $apiKey = '',
+        #[\SensitiveParameter] protected readonly string $apiKey = '',
     ) {
     }
 

@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class Gateway extends Service
 {
-    public function __construct(Client $client, string $apiKey, protected readonly string $gateway)
+    public function __construct(Client $client, #[\SensitiveParameter] string $apiKey, protected readonly string $gateway)
     {
         parent::__construct($client, $apiKey);
     }
