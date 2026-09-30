@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace RazorInformatics\RiNotifierPhp;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class Service
@@ -34,17 +36,61 @@ abstract class Service
         ];
     }
 
-    protected function success(ResponseInterface $response): array
+    /**
+     * Turn a failed request into an error, keeping the server's explanation when it gives one:
+     * its `message` for 402, 404 and 422 and the validation `errors` (keyed by field) as the data.
+     */
+    protected function failed(GuzzleException $e): array
     {
+        $response = $e instanceof RequestException ? $e->getResponse() : null;
+        if (!$response instanceof ResponseInterface) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        $body = json_decode((string) $response->getBody(), true);
+        $body = is_array($body) ? $body : [];
+        $code = $response->getStatusCode();
+
+        if (in_array($code, [402, 404, 422], true) && is_string($body['message'] ?? null)) {
+            return [
+                'status' => Constants::STATUS_ERROR,
+                'message' => $body['message'],
+                'data' => $body['errors'] ?? [],
+            ];
+        }
+
+        return $this->error($code, $e->getMessage(), $body['errors'] ?? []);
+    }
+
+    /**
+     * @param list<string> $keep top level keys of the response to return next to the data, e.g. pagination `links` and `meta`
+     */
+    protected function success(ResponseInterface $response, array $keep = []): array
+    {
+        $body = (string) $response->getBody();
+        if ($body === '') {
+            return [
+                'status' => Constants::STATUS_SUCCESS,
+                'data' => [],
+            ];
+        }
+
         try {
-            $data = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             return $this->error(500, 'Invalid JSON response from server: ' . $e->getMessage());
         }
 
-        return [
+        $result = [
             'status' => Constants::STATUS_SUCCESS,
             'data' => $data->data ?? $data,
         ];
+        foreach ($keep as $key) {
+            if (isset($data->{$key})) {
+                $result[$key] = $data->{$key};
+            }
+        }
+
+        return $result;
     }
 }

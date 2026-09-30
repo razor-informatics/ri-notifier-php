@@ -26,4 +26,10 @@ class Constants
 
     //Web SMS
     public const string GATEWAY_WEB_SMS = 'onfon';
+
+    //Roam Tech
+    public const string GATEWAY_ROAM_TECH = 'roam';
+
+    //Razor SMS
+    public const string GATEWAY_RAZOR_SMS = 'razor-sms';
 }

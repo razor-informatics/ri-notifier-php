@@ -51,6 +51,53 @@ $results = $razor->message()->send([
 print_r($results);
 ```
 
+`priority` is optional and defaults to a notification. Use a `MessagePriority` case: `Marketing` (1), `Notification` (2), `Transactional` (3) or `HighPriority` (4). A plain int also works. High priority needs to be enabled for the project, otherwise it goes as transactional.
+
+```php
+$results = $razor->message()->send([
+        'phone_number' => '0700123456',
+        'message' => 'Your verification code is 482913',
+        'priority' => RiNotifierPhp\MessagePriority::Transactional,
+]);
+```
+
+### Send to Many Example
+
+Send one message to every number of `phone_number`, `contacts` and the contacts of `labels`, once each. Each field takes a string or an array of them, with at most 1000 numbers per request. If you leave out `priority`, a send to contacts or labels goes as marketing and any other send goes as a notification.
+
+```php
+use RazorInformatics\RiNotifierPhp;
+
+$apiKey  = 'YOUR_API_KEY';
+$razor = new RiNotifierPhp\Notifier($apiKey);
+
+$results = $razor->message()->sendMany([
+        'message' => 'Our offices are closed on Friday, 10 October.',
+        'phone_number' => ['0712345678', '+254722000111'],
+        'contacts' => ['CONTACT ID'],
+        'labels' => ['LABEL ID'],
+]);
+
+print_r($results);
+```
+
+On success, `data` holds the created messages. The result also carries the server's `message`, a `summary` (recipients, statuses and failed count) and the `failed` recipients.
+
+### Send Personalised Messages Example
+
+An array of messages gives each recipient its own message. It pairs by position with an array of `phone_number` or of `contacts` of the same length. It cannot go to labels.
+
+```php
+$results = $razor->message()->sendMany([
+        'message' => [
+            'Hi Jane, your order #1042 has shipped.',
+            'Hi John, your order #1043 has shipped.',
+        ],
+        'phone_number' => ['0712345678', '0722000111'],
+        'priority' => RiNotifierPhp\MessagePriority::Transactional,
+]);
+```
+
 ### Fetch message Example
 details of a previous sent message.
 
@@ -58,7 +105,7 @@ details of a previous sent message.
 use RazorInformatics\RiNotifierPhp;
 
 $apiKey  = 'YOUR_API_KEY';
-$razor = new RiNotifierPhp\Notifier($apiKey);
+$razor = new Notifier($apiKey);
 
 
 $results = $razor->message()->fetchMessage('MESSAGE ID');
@@ -73,7 +120,7 @@ Decode a hash to retrieve the original message details.
 use RazorInformatics\RiNotifierPhp;
 
 $apiKey  = 'YOUR_API_KEY';
-$razor = new RiNotifierPhp\Notifier($apiKey);
+$razor = new Notifier($apiKey);
 
 
 $results = $razor->decoder()->decode('HASH_VALUE');
@@ -100,6 +147,75 @@ On failure, it will return:
     'status' => 'error',
     'message' => 'Error message here',
     'data' => []
+]
+```
+
+### Contacts Example
+
+The project address book. A phone number can only be used once in the project.
+
+```php
+use RazorInformatics\RiNotifierPhp;
+
+$apiKey  = 'YOUR_API_KEY';
+$razor = new Notifier($apiKey);
+
+// a page of contacts with their labels, `links` and `meta` carry the pagination
+$results = $razor->contacts()->list(page: 1, perPage: 15);
+
+// `name` and `labels` are optional
+$results = $razor->contacts()->create([
+        'name' => 'Jane Wanjiku',
+        'phone' => '0712345678',
+        'labels' => ['LABEL ID'],
+]);
+
+$results = $razor->contacts()->get('CONTACT ID');
+
+// only the fields given change, `labels` replaces the contact labels ([] removes them all)
+$results = $razor->contacts()->update('CONTACT ID', [
+        'name' => 'Jane W. Kamau',
+        'labels' => [],
+]);
+
+// its labels stay
+$results = $razor->contacts()->delete('CONTACT ID');
+```
+
+### Labels Example
+
+Groups of contacts. You can send to a whole label in one request. Label names are unique in the project, with a maximum of 50 characters.
+
+```php
+use RazorInformatics\RiNotifierPhp;
+
+$apiKey  = 'YOUR_API_KEY';
+$razor = new Notifier($apiKey);
+
+// a page of labels with their contact counts
+$results = $razor->labels()->list(page: 1, perPage: 15);
+
+$results = $razor->labels()->create('Customers');
+
+$results = $razor->labels()->get('LABEL ID');
+
+$results = $razor->labels()->rename('LABEL ID', 'VIP Customers');
+
+// its contacts stay
+$results = $razor->labels()->delete('LABEL ID');
+```
+
+### Errors
+
+On failure every method returns `status` `error`. For a validation error (422), a missing resource (404) or an insufficient balance (402), the `message` is the one the server gives, and `data` holds the validation errors keyed by field:
+
+```php
+[
+    'status' => 'error',
+    'message' => 'a contact with this phone number already exists.',
+    'data' => [
+        'phone' => ['a contact with this phone number already exists.']
+    ]
 ]
 ```
 
@@ -130,13 +246,15 @@ Available gateways are
 - Africa’s Talking
 - Onfon Media
 - Web SMS
+- Roam Tech
+- Razor SMS
 - _more coming soon._
 
 ```php
 use RazorInformatics\RiNotifierPhp;
 
 $apiKey  = 'YOUR_API_KEY';
-$razor = new RiNotifierPhp\Notifier($apiKey);
+$razor = new Notifier($apiKey);
 
 $results = $razor->gateway(RiNotifierPhp\Constants::GATEWAY_NOTIFIER)->details();
 

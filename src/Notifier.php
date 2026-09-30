@@ -17,7 +17,6 @@ class Notifier
             'base_uri' => $this->url,
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->apiKey,
-                'Content-Type' => 'multipart/form-data',
                 'Accept' => 'application/json',
             ],
         ]);
@@ -36,6 +35,16 @@ class Notifier
     public function gateway(string $gateway = Constants::GATEWAY_NOTIFIER): Gateway
     {
         return new Gateway($this->client, $this->apiKey, $gateway);
+    }
+
+    public function contacts(): Contact
+    {
+        return new Contact($this->client, $this->apiKey);
+    }
+
+    public function labels(): Label
+    {
+        return new Label($this->client, $this->apiKey);
     }
 
     public function decoder(): DeHash

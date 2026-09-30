@@ -21,7 +21,7 @@ class DeHash extends Service
                 'timeout' => 10,
             ]);
         } catch (GuzzleException $e) {
-            return $this->error($e->getCode(), $e->getMessage());
+            return $this->failed($e);
         }
         return $this->success($response);
     }
