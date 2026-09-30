@@ -2,7 +2,7 @@
 
 Releases will be listed here.
 
-## 0.3.0 _Unreleased_
+## 0.3.0 _2026-09-30_
 PHP 8.3 and Guzzle 8 support
 - **Breaking:** minimum PHP version is now 8.3 (PHP 8.1 is end of life; PHP 8.2 reaches end of life on 31 Dec 2026).
 - Allow `guzzlehttp/guzzle` `^7.10 || ^8.2`.
@@ -19,7 +19,7 @@ Notifier v2.7.0 APIs
 - Errors for 402, 404 and 422 now use the server's message, and `data` holds the validation `errors` keyed by field.
 - Remove the incorrect default `Content-Type: multipart/form-data` header. Each request sets its own.
 
-## 0.2.0 _2026-05-05
+## 0.2.0 _2026-05-05_
 Add mpesa hash decode  functionality
 - Introduce `decode` method in `DeHash` class for hash decoding.
 - Update `README.md` with an example demonstrating decode functionality.
