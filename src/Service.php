@@ -6,7 +6,6 @@ namespace RazorInformatics\RiNotifierPhp;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class Service
@@ -42,7 +41,8 @@ abstract class Service
      */
     protected function failed(GuzzleException $e): array
     {
-        $response = $e instanceof RequestException ? $e->getResponse() : null;
+        // Guzzle 7 puts getResponse() on RequestException, Guzzle 8 only on its ResponseException subclass.
+        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
         if (!$response instanceof ResponseInterface) {
             return $this->error($e->getCode(), $e->getMessage());
         }
@@ -78,7 +78,11 @@ abstract class Service
         try {
             $data = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
-            return $this->error(500, 'Invalid JSON response from server: ' . $e->getMessage());
+            return [
+                'status' => Constants::STATUS_ERROR,
+                'message' => 'Invalid JSON response from server: ' . $e->getMessage(),
+                'data' => [],
+            ];
         }
 
         $result = [
